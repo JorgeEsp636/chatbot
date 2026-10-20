@@ -1,0 +1,449 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --cheems-cyan: #00e5ff;
+    --cheems-cyan-dark: #0891b2;
+    --cheems-blue: #0284c7;
+    --cheems-bg: #060a12;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #060a12;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at top, rgba(6, 182, 212, 0.12), transparent 32%),
+      #060a12;
+    color: #e2e8f0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+}
+
+/* Glassmorphism card utilities */
+.cheems-glass {
+  background: rgba(13, 22, 38, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(6, 182, 212, 0.28);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 20px 0 rgba(6, 182, 212, 0.08);
+}
+
+.cheems-glass-subtle {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+}
+
+.cheems-glass-active {
+  background: rgba(8, 145, 178, 0.18);
+  border: 1px solid rgba(6, 182, 212, 0.6);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+}
+
+.cheems-glow-cyan {
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.45);
+}
+
+.cheems-glow-cyan-sm {
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.35);
+}
+
+.cheems-glow-text {
+  text-shadow: 0 0 12px rgba(6, 182, 212, 0.6);
+}
+
+/* Login theme toggle */
+.auth-theme-light {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+.auth-theme-light [class~="bg-slate-900/95"] {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border-color: #cbd5e1 !important;
+}
+
+.auth-theme-light [class~="bg-slate-950/80"],
+.auth-theme-light [class~="bg-slate-950/70"] {
+  background: rgba(248, 250, 252, 0.95) !important;
+  border-color: #cbd5e1 !important;
+}
+
+.auth-theme-light .text-white {
+  color: #0f172a !important;
+}
+
+.auth-theme-light .text-slate-100,
+.auth-theme-light .text-slate-200,
+.auth-theme-light .text-slate-300 {
+  color: #334155 !important;
+}
+
+.auth-theme-light .text-slate-400,
+.auth-theme-light .text-slate-500 {
+  color: #64748b !important;
+}
+
+.auth-theme-light .border-slate-800,
+.auth-theme-light .border-slate-700 {
+  border-color: #cbd5e1 !important;
+}
+
+.auth-theme-light input,
+.auth-theme-light select {
+  color: #0f172a !important;
+}
+
+.auth-theme-light input::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Global theme used by the app header toggle */
+.theme-light {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+.theme-light [class~="bg-[#060a12]"],
+.theme-light [class~="bg-[#04070d]"] {
+  background: #f1f5f9 !important;
+}
+
+.theme-light [class~="bg-slate-950/90"],
+.theme-light [class~="bg-slate-950/80"],
+.theme-light [class~="bg-slate-950/70"],
+.theme-light [class~="bg-slate-900/95"] {
+  background: rgba(255, 255, 255, 0.94) !important;
+}
+
+.theme-light .text-white {
+  color: #0f172a !important;
+}
+
+.theme-light .text-slate-100,
+.theme-light .text-slate-200,
+.theme-light .text-slate-300,
+.theme-light .text-slate-400 {
+  color: #475569 !important;
+}
+
+.theme-light .border-slate-800,
+.theme-light .border-slate-700 {
+  border-color: #cbd5e1 !important;
+}
+
+/* Keep the two global modes visually consistent across every screen. */
+.app-theme:not(.theme-light) {
+  background: #071426 !important;
+}
+
+.app-theme.theme-light {
+  background: #ffffff !important;
+}
+
+.app-theme:not(.theme-light) [class~="bg-[#060a12]"],
+.app-theme:not(.theme-light) [class~="bg-[#04070d]"],
+.app-theme:not(.theme-light) [class~="bg-slate-950"],
+.app-theme:not(.theme-light) [class~="bg-slate-950/90"],
+.app-theme:not(.theme-light) [class~="bg-slate-950/85"],
+.app-theme:not(.theme-light) [class~="bg-slate-950/80"],
+.app-theme:not(.theme-light) [class~="bg-slate-950/70"],
+.app-theme:not(.theme-light) [class~="bg-slate-900"],
+.app-theme:not(.theme-light) [class~="bg-slate-900/95"],
+.app-theme:not(.theme-light) [class~="bg-slate-900/80"] {
+  background-color: #071426 !important;
+}
+
+.theme-light [class~="bg-[#060a12]"],
+.theme-light [class~="bg-[#04070d]"],
+.theme-light [class~="bg-slate-950"],
+.theme-light [class~="bg-slate-950/90"],
+.theme-light [class~="bg-slate-950/85"],
+.theme-light [class~="bg-slate-950/80"],
+.theme-light [class~="bg-slate-950/70"],
+.theme-light [class~="bg-slate-900"],
+.theme-light [class~="bg-slate-900/95"],
+.theme-light [class~="bg-slate-900/80"] {
+  background-color: #ffffff !important;
+}
+
+.theme-light .cheems-glass,
+.theme-light .cheems-glass-subtle {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
+}
+
+.app-theme:not(.theme-light) .cheems-glass,
+.app-theme:not(.theme-light) .cheems-glass-subtle {
+  background: #071426 !important;
+}
+
+/* Cover nested screens, cards, dialogs, and the mobile simulator frame. */
+.app-theme:not(.theme-light) [class*="bg-slate-950"],
+.app-theme:not(.theme-light) [class*="bg-slate-900"],
+.app-theme:not(.theme-light) [class*="bg-[#060a12]"],
+.app-theme:not(.theme-light) [class*="bg-[#04070d]"] {
+  background-color: #071426 !important;
+}
+
+.theme-light [class*="bg-slate-950"],
+.theme-light [class*="bg-slate-900"],
+.theme-light [class*="bg-[#060a12]"],
+.theme-light [class*="bg-[#04070d]"] {
+  background-color: #ffffff !important;
+}
+
+.theme-light [class*="text-slate-"],
+.theme-light [class*="text-white"] {
+  color: #1e293b !important;
+}
+
+.app-theme:not(.theme-light) [class*="text-slate-"],
+.app-theme:not(.theme-light) [class*="text-white"] {
+  color: #e2e8f0 !important;
+}
+
+.theme-light [class*="border-slate-"] {
+  border-color: #cbd5e1 !important;
+}
+
+.app-theme:not(.theme-light) [class*="border-slate-"] {
+  border-color: #1e3a5f !important;
+}
+
+/* Refined light palette: soft page, white panels, and tinted controls. */
+.app-theme.theme-light {
+  background: #e8eef5 !important;
+}
+
+.theme-light [class*="bg-[#060a12]"],
+.theme-light [class*="bg-[#04070d]"] {
+  background: #e8eef5 !important;
+}
+
+.theme-light [class*="bg-slate-950"] {
+  background: #f8fafc !important;
+}
+
+.theme-light [class*="bg-slate-900"] {
+  background: #ffffff !important;
+}
+
+.theme-light .cheems-glass,
+.theme-light .cheems-glass-subtle {
+  background: #ffffff !important;
+  border-color: #b9c9d9 !important;
+  box-shadow: 0 10px 28px rgba(30, 64, 95, 0.12) !important;
+}
+
+.theme-light input,
+.theme-light select,
+.theme-light textarea {
+  background-color: #f8fafc !important;
+  border-color: #b9c9d9 !important;
+}
+
+.theme-light [class*="border-slate-"] {
+  border-color: #b9c9d9 !important;
+}
+
+/* The light mode is intentionally pure white across the complete app. */
+.app-theme.theme-light,
+.app-theme.theme-light * {
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+.app-theme.theme-light,
+.app-theme.theme-light .text-white,
+.app-theme.theme-light [class*="text-slate-"] {
+  color: #0f172a !important;
+}
+
+.app-theme.theme-light [class*="text-"] {
+  color: #0f172a !important;
+}
+
+.app-theme.theme-light h1,
+.app-theme.theme-light h2,
+.app-theme.theme-light h3,
+.app-theme.theme-light h4,
+.app-theme.theme-light label,
+.app-theme.theme-light p,
+.app-theme.theme-light span,
+.app-theme.theme-light button {
+  color: #0f172a;
+}
+
+.app-theme.theme-light [class*="border-"],
+.app-theme.theme-light .cheems-glass,
+.app-theme.theme-light .cheems-glass-subtle {
+  border-color: #cbd5e1 !important;
+}
+
+/* Custom scrollbar for mobile feel */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(6, 182, 212, 0.25);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 182, 212, 0.45);
+}
+
+/* Leaflet dark theme tweaks */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #090e17 !important;
+  font-family: inherit !important;
+}
+
+.leaflet-control-attribution {
+  display: none !important;
+}
+
+.leaflet-bar {
+  border: 1px solid rgba(6, 182, 212, 0.3) !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+.leaflet-bar a {
+  background-color: #0f172a !important;
+  color: #00e5ff !important;
+  border-bottom: 1px solid rgba(6, 182, 212, 0.2) !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+}
+
+/* Keep driver rows readable inside the fixed-width phone simulator. */
+.mobile-frame .conductores-list-item {
+  flex-direction: column !important;
+  align-items: stretch !important;
+}
+
+.mobile-frame .conductores-list-item > div:first-child,
+.mobile-frame .conductores-list-item > div:last-child {
+  width: 100% !important;
+}
+
+.mobile-frame .conductores-list-item h3 {
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.mobile-frame .conductores-list-item .driver-details {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.25rem !important;
+  line-height: 1.25 !important;
+}
+
+.mobile-frame .conductores-list-item {
+  padding: 0.75rem !important;
+}
+
+.mobile-frame .conductores-list-item .driver-details span {
+  max-width: 100% !important;
+  font-size: 0.68rem !important;
+}
+
+.mobile-frame .conductores-list-item > div:last-child {
+  justify-content: space-between !important;
+}
+
+.mobile-frame .buses-list-item {
+  padding: 0.75rem !important;
+}
+
+.mobile-frame .buses-list-item h3 {
+  font-size: 0.9rem !important;
+}
+
+.mobile-frame .buses-list-item .grid {
+  gap: 0.35rem !important;
+}
+
+/* Stack dashboard content inside the phone simulator so labels stay readable. */
+.mobile-frame .dashboard-metrics-grid,
+.mobile-frame .dashboard-charts-grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.mobile-frame .dashboard-metric-card {
+  min-height: 108px !important;
+  padding: 1rem !important;
+}
+
+.mobile-frame .dashboard-metric-card > div:first-child {
+  align-items: center !important;
+}
+
+.mobile-frame .dashboard-chart {
+  min-width: 0 !important;
+}
+
+/* Pulse animation for live bus */
+@keyframes bus-pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 14px rgba(6, 182, 212, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
+  }
+}
+
+.animate-bus-pulse {
+  animation: bus-pulse 2s infinite;
+}

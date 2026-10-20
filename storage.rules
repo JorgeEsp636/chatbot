@@ -1,0 +1,47 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Reglas para adjuntos de PQRS
+    match /pqrs/{userId}/{fileName} {
+      // Lectura: Propietario del archivo o administrador
+      allow read: if isAuthenticated();
+
+      // Escritura: Solo el usuario propietario en su propia carpeta
+      // Restricción de tipo de archivo (imágenes y PDFs) y tamaño máximo de 10MB
+      allow write: if isOwner(userId) &&
+        request.resource.size < 10 * 1024 * 1024 && // Máximo 10MB
+        (
+          request.resource.contentType.matches('image/.*') ||
+          request.resource.contentType == 'application/pdf'
+        );
+
+      // Eliminación: Propietario o administrador
+      allow delete: if isOwner(userId);
+    }
+
+    // Reglas para fotos de perfil
+    match /perfiles/{userId}/{imageName} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) &&
+        request.resource.size < 5 * 1024 * 1024 && // Máximo 5MB
+        request.resource.contentType.matches('image/.*');
+      allow delete: if isOwner(userId);
+    }
+
+    // Bloqueo por defecto
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

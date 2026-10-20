@@ -1,0 +1,106 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Role checking: looks at custom claim or user doc in /usuarios/{userId}
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.role == 'administrador' ||
+        get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol == 'administrador'
+      );
+    }
+
+    function isConductor() {
+      return isAuthenticated() && (
+        request.auth.token.role == 'conductor' ||
+        get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol == 'conductor' ||
+        isAdmin()
+      );
+    }
+
+    // 1. Colección de Usuarios
+    match /usuarios/{userId} {
+      // Lectura: Propietario o Administrador
+      allow read: if isOwner(userId) || isAdmin();
+      
+      // Creación: Al registrarse (el ID debe coincidir con el auth.uid)
+      // Se exige que el rol sea 'usuario' (o solicitud 'conductor').
+      // ESTRICTAMENTE PROHIBIDO registrarse como 'administrador' desde el registro público.
+      allow create: if isOwner(userId) && (
+        request.resource.data.rol in ['usuario', 'pasajero', 'conductor'] &&
+        request.resource.data.rol != 'administrador' &&
+        request.resource.data.nombre is string &&
+        request.resource.data.email is string &&
+        request.resource.data.createdAt is string
+      );
+
+      // Actualización: Solo el propietario puede editar datos personales,
+      // pero no puede cambiar su propio rol a administrador (a menos que ya sea admin)
+      allow update: if isOwner(userId) && (
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['rol']) ||
+        isAdmin()
+      );
+
+      // Eliminación: Solo Administrador
+      allow delete: if isAdmin();
+    }
+
+    // 2. Colección de Tarifas
+    match /tarifas/{tarifaId} {
+      // Lectura pública para cualquier usuario autenticado (pasajero, conductor, admin)
+      allow read: if isAuthenticated();
+
+      // Escritura, edición y eliminación: Restringido estrictamente a Administradores
+      allow create, update, delete: if isAdmin();
+    }
+
+    // 3. Colección de Ubicaciones en Tiempo Real (ubicaciones_conductores)
+    match /ubicaciones_conductores/{conductorId} {
+      // Cualquier usuario autenticado (pasajero o conductor) puede leer la posición para el mapa
+      allow read: if isAuthenticated();
+
+      // Solo el conductor asignado puede escribir o actualizar su propia ubicación GPS
+      allow write: if isOwner(conductorId) && isConductor();
+    }
+
+    // 4. Colección de PQRS (Peticiones, Quejas, Reclamos y Sugerencias)
+    match /pqrs/{pqrsId} {
+      // Lectura: El usuario autor de la PQRS o administradores/revisores autorizados
+      allow read: if isAuthenticated() && (
+        resource.data.usuarioId == request.auth.uid ||
+        isAdmin()
+      );
+
+      // Creación: Usuarios autenticados pueden crear sus propias solicitudes
+      allow create: if isAuthenticated() && 
+        request.resource.data.usuarioId == request.auth.uid &&
+        request.resource.data.estado == 'PENDIENTE';
+
+      // Actualización: 
+      // El usuario común puede actualizar solo si sigue PENDIENTE y no altera el estado.
+      // El Administrador puede cambiar el estado (EN_REVISION, RESPONDIDA, CERRADA) y agregar respuesta.
+      allow update: if isAuthenticated() && (
+        (isOwner(resource.data.usuarioId) && resource.data.estado == 'PENDIENTE' && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['estado', 'respuestaOficial'])) ||
+        isAdmin()
+      );
+
+      // Eliminación: Solo administrador
+      allow delete: if isAdmin();
+    }
+
+    // Bloqueo por defecto para cualquier otra colección no especificada
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

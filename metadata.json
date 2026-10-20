@@ -1,0 +1,6 @@
+{
+  "name": "CHEEMS - Transporte Público Valle de Ubaté",
+  "description": "Sistema de transporte intermunicipal con 3 roles (usuario, conductor, administrador) para los municipios de la Provincia de Valle de Ubaté, Cundinamarca, Colombia.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

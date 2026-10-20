@@ -1,0 +1,68 @@
+{
+  "expo": {
+    "name": "TransiMóvil",
+    "slug": "transimovil-transporte-publico",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0F172A"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.transimovil.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "TransiMóvil requiere tu ubicación para calcular rutas y mostrar los buses cercanos.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "TransiMóvil requiere acceso continuo a tu ubicación para compartir la posición del vehículo con los pasajeros.",
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
+      }
+    },
+    "android": {
+      "package": "com.transimovil.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0F172A"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "POST_NOTIFICATIONS"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "${EXPO_PUBLIC_GOOGLE_MAPS_API_KEY}"
+        }
+      }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Permite que TransiMóvil transmita tu posición en tiempo real a los pasajeros durante el trayecto."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#2563EB"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "your-eas-project-id"
+      }
+    }
+  }
+}
